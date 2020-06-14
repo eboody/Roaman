@@ -1,0 +1,29 @@
+{
+    "name": "Roaman",
+    "manifest_version": 2,
+  
+    "description": "This extension provides tweaks to Roam Research",
+    "version": "1.0",
+
+    "browser_action": {
+     "default_icon": "roam.png",
+     "default_popup": "popup.html"
+    },
+    "permissions": [
+     "activeTab"
+     ],
+     "icons": {
+        "16": "roam.png",
+        "32": "roam.png",
+        "48": "roam.png",
+        "128": "roam.png"
+     },
+     "content_scripts": [
+        {
+          "matches": [
+            "https://roamresearch.com/*"
+          ],
+          "js": ["scopeCue.js"]
+        }
+      ]
+  }
