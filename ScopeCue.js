@@ -3,6 +3,7 @@ var oldColor
 var backgroundColor
 var oldBulletColor
 var shifted
+var mousedover = 0
 
 
 function addListenerToBlocks() {
@@ -15,8 +16,9 @@ function addListenerToBlocks() {
 //highlight the text area bullet, the left border of children of the sibling and the bullet of the sibling
 function highlight() {
     //check to see if this block is a header
-    if(document.querySelector("textarea[id^=block]")){
-    var isHeader = document.querySelector("textarea[id^=block]").parentNode.parentNode.className.includes("level")}
+    if (document.querySelector("textarea[id^=block]")) {
+        var isHeader = document.querySelector("textarea[id^=block]").parentNode.parentNode.className.includes("level")
+    }
 
     //make a reference to textarea's container
     var textAreaContainer = document.querySelector("textarea[id^=block]").parentNode.parentNode.parentNode.parentNode
@@ -27,8 +29,9 @@ function highlight() {
 
     if (isHeader == false) {
         //check if the sibling above is a parent, because if it's not there's no point in highlighting the bullet
-        if(textAreaContainer.previousElementSibling){
-        siblingIsParent = textAreaContainer.previousElementSibling.children[1].children.length}
+        if (textAreaContainer.previousElementSibling) {
+            siblingIsParent = textAreaContainer.previousElementSibling.children[1].children.length
+        }
     }
     else {
         //header version
@@ -85,7 +88,7 @@ function initialize() {
     document.onkeyup = function (e) {
         if (e.which == 8 || e.which == 9 || (e.shiftKey && e.which == 9) || e.which == 13 || e.which == 38 || e.which == 40 || (e.altKey && e.shiftKey && e.which == 37) || (e.altKey && e.shiftKey && e.which == 38) || (e.altKey && e.shiftKey && e.which == 39) || (e.altKey && e.shiftKey && e.which == 40)) {
             addListenerToBlocks();
-            setTimeout(highlight, 50)
+
         }
         //ctrl+del will delete the page
         if (e.ctrlKey && e.which == 46) {
@@ -148,34 +151,32 @@ function initialize() {
         }
     }
 
-
-    window.addEventListener('wheel', function (event) {
-        window.onkeyup = function (e) { shifted = e.shiftKey };
-        window.onkeydown = function (e) { shifted = e.shiftKey };
-        if (event.deltaY < 0) {
+    var listening = 0;
+    document.querySelector(".roam-article").addEventListener("wheel", function (e) {
+        var shifted
+        if (!listening) {
+            listening = 1
+            window.onkeyup = function (e) { shifted = e.shiftKey };
+            window.onkeydown = function (e) { shifted = e.shiftKey };
             [].map.call(document.querySelectorAll(".flex-h-box.flex-align-start.flex-justify-start"), e => e.addEventListener('wheel', function (event) {
                 //if scrolled up
+                var collapsed = e.firstChild.firstElementChild.firstChild.className.includes("rotate")
                 if (event.deltaY < 0 && shifted) {
                     //if the caret is facing down then click on it
-                    if (e.firstChild.firstElementChild.firstChild.className.includes("rotate") == false) {
+                    if (!collapsed) {
                         e.firstChild.firstChild.click();
                         e.firstChild.firstChild.firstChild.click();
                         //unhighlight bullets and stuff when I collapse
                         normalize();
                         setTimeout(50, normalize);
+                        listening = 0;
                     }
                 }
-            }));
-        }
-        //otherwise if scrolled down
-        else if (event.deltaY > 0) {
-            [].map.call(document.querySelectorAll(".flex-h-box.flex-align-start.flex-justify-start"), e => e.addEventListener('wheel', function (event) {
-                //if scrolled down
-                if (event.deltaY > 0 && shifted) {
-                    //if the caret is facing right then click on it
-                    if (e.firstChild.firstElementChild.firstChild.className.includes("rotate") == true) {
+                else if (event.deltaY > 0 && shifted) {
+                    if (collapsed) {
                         e.firstChild.firstChild.click();
                         e.firstChild.firstChild.firstChild.click();
+                        listening = 0
                     }
                 }
             }));
@@ -183,57 +184,131 @@ function initialize() {
     });
 
 
-}
 
-function doGetCaretPosition(ctrl) {
-    var CaretPos = 0;
+    // window.addEventListener('wheel', function (event) {
+    //     window.onkeyup = function (e) { shifted = e.shiftKey };
+    //     window.onkeydown = function (e) { shifted = e.shiftKey };
+    //     // //for pages in the sidebar
+    // Array.prototype.map.call(document.querySelectorAll(".level2"), e => e.parentNode.parentNode.addEventListener('wheel', function(event){
+    //     //if scrolled up and shift is pressed
+    //     if (event.deltaY < 0 && shifted) {
+    //         //if the button is a plus
+    //         if (e.parentNode.querySelector(".bp3-icon-plus")) {
+    //             e.parentNode.querySelector(".bp3-icon-plus").click();
+    //         }
+    //     }
+    // }));
 
-    if (ctrl.selectionStart || ctrl.selectionStart == 0) {// Standard.
-        CaretPos = ctrl.selectionStart;
+    var start = 0;
+    var end
+    document.querySelector(".roam-article").addEventListener('mousemove', function (e) {
+        if (e.shiftKey) {
+            if (start == 0) {
+                start = e.clientY
+            }
+            console.log("start = " + start)   
+            end = e.clientY
+            console.log("end = " + end)
+            var diff = end -start
+            console.log("diff = " + diff)
+        }
+        else{
+            if(start != 0){start = 0}
+        }
+    })
+
+    // window.onkeyup = function (e) { shifted = e.shiftKey; start = 0 };
+    // function addShiftScrollListenerToBlocks() {
+    //     window.onkeydown = function (e) { shifted = e.shiftKey; };
+    //     [].map.call(document.querySelectorAll(".flex-h-box.flex-align-start.flex-justify-start"), e => e.addEventListener('wheel', function (event) {
+    //         //if scrolled up
+    //         var collapsed = e.firstChild.firstElementChild.firstChild.className.includes("rotate")
+    //         if (event.deltaY < 0 && shifted) {
+    //             //if the caret is facing down then click on it
+    //             if (!collapsed) {
+    //                 e.firstChild.firstChild.click();
+    //                 e.firstChild.firstChild.firstChild.click();
+    //                 //unhighlight bullets and stuff when I collapse
+    //                 normalize();
+    //                 setTimeout(50, normalize);
+    //             }
+    //         }
+    //         else if (event.deltaY > 0 && shifted) {
+    //             if (collapsed) {
+    //                 e.firstChild.firstChild.click();
+    //                 e.firstChild.firstChild.firstChild.click();
+    //             }
+    //         }
+    //     }
+    //     ));
+    // }
+    // //otherwise if scrolled down
+    // else if (event.deltaY > 0) {
+    //     [].map.call(document.querySelectorAll(".flex-h-box.flex-align-start.flex-justify-start"), e => e.addEventListener('wheel', function (event) {
+    //         //if scrolled down
+    //         if (event.deltaY > 0 && shifted) {
+    //             //if the caret is facing right then click on it
+    //             if (e.firstChild.firstElementChild.firstChild.className.includes("rotate") == true) {
+    //                 e.firstChild.firstChild.click();
+    //                 e.firstChild.firstChild.firstChild.click();
+    //             }
+    //         }
+    //     }));
+    // }
+    //     });
+
+
+    // }
+
+    function doGetCaretPosition(ctrl) {
+        var CaretPos = 0;
+
+        if (ctrl.selectionStart || ctrl.selectionStart == 0) {// Standard.
+            CaretPos = ctrl.selectionStart;
+        }
+        else if (document.selection) {// Legacy IE
+            ctrl.focus();
+            var Sel = document.selection.createRange();
+            Sel.moveStart('character', -ctrl.value.length);
+            CaretPos = Sel.text.length;
+        }
+
+        return (CaretPos);
     }
-    else if (document.selection) {// Legacy IE
-        ctrl.focus();
-        var Sel = document.selection.createRange();
-        Sel.moveStart('character', -ctrl.value.length);
-        CaretPos = Sel.text.length;
+
+
+    function setCaretPosition(ctrl, pos) {
+        if (ctrl.setSelectionRange) {
+            ctrl.focus();
+            ctrl.setSelectionRange(pos, pos);
+        }
+        else if (ctrl.createTextRange) {
+            var range = ctrl.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
     }
 
-    return (CaretPos);
-}
 
-
-function setCaretPosition(ctrl, pos) {
-    if (ctrl.setSelectionRange) {
-        ctrl.focus();
-        ctrl.setSelectionRange(pos, pos);
+    //deletes the page
+    function deletePage() {
+        document.querySelector("[class='bp3-button bp3-minimal bp3-small bp3-icon-more']").click()
+        document.querySelector("[class='bp3-popover-content']").querySelector("[class='bp3-menu']").children[6].firstChild.click()
+        //waits till the delete button exists and then clicks it
+        var checkExist = setInterval(function () {
+            if (document.querySelector('button.bp3-button.confirm-button.bp3-intent-danger')) {
+                document.querySelector("button.bp3-button.confirm-button.bp3-intent-danger").click()
+                clearInterval(checkExist);
+            }
+        }, 100); // check every 100ms
     }
-    else if (ctrl.createTextRange) {
-        var range = ctrl.createTextRange();
-        range.collapse(true);
-        range.moveEnd('character', pos);
-        range.moveStart('character', pos);
-        range.select();
-    }
-}
 
-
-//deletes the page
-function deletePage() {
-    document.querySelector("[class='bp3-button bp3-minimal bp3-small bp3-icon-more']").click()
-    document.querySelector("[class='bp3-popover-content']").querySelector("[class='bp3-menu']").children[6].firstChild.click()
-    //waits till the delete button exists and then clicks it
+    //don't initialize until the h1 element exists
     var checkExist = setInterval(function () {
-        if (document.querySelector('button.bp3-button.confirm-button.bp3-intent-danger')) {
-            document.querySelector("button.bp3-button.confirm-button.bp3-intent-danger").click()
+        if (document.querySelector('h1')) {
+            initialize();
             clearInterval(checkExist);
         }
     }, 100); // check every 100ms
-}
-
-//don't initialize until the h1 element exists
-var checkExist = setInterval(function () {
-    if (document.querySelector('h1')) {
-        initialize();
-        clearInterval(checkExist);
-    }
-}, 100); // check every 100ms
