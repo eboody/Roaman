@@ -68,7 +68,8 @@ function normalize() {
 
 function initialize() {
     //get the initial colors of inner, outer bullets and borders
-    oldColor = window.getComputedStyle(document.querySelector('.block-border-left')).borderColor
+    if (document.querySelector('.block-border-left')){
+        oldColor = window.getComputedStyle(document.querySelector('.block-border-left')).borderColor}
     backgroundColor = window.getComputedStyle(document.querySelector(".simple-bullet-outer")).backgroundColor
     oldBulletColor = window.getComputedStyle(document.querySelector(".simple-bullet-inner")).backgroundColor
 
@@ -220,12 +221,20 @@ function setCaretPosition(ctrl, pos) {
 //deletes the page
 function deletePage() {
     document.querySelector("[class='bp3-button bp3-minimal bp3-small bp3-icon-more']").click()
-    document.querySelector("[class='bp3-popover-content']").querySelector("[class='bp3-menu']").children[6].firstChild.click()
+    //document.querySelector("[class='bp3-popover-content']").querySelector("[class='bp3-menu']").children[6].firstChild.click()
+
+    var ifMenuExists = setInterval(function () {
+        if (document.querySelector("[class='bp3-popover-content']").querySelector("[class='bp3-menu']")) {
+            document.querySelector("[class='bp3-popover-content']").querySelector("[class='bp3-menu']").children[6].firstChild.click()
+            clearInterval(ifMenuExists);
+        }
+    }, 100); // check every 100ms
+
     //waits till the delete button exists and then clicks it
-    var checkExist = setInterval(function () {
+    var ifDeleteButtonExists = setInterval(function () {
         if (document.querySelector('button.bp3-button.confirm-button.bp3-intent-danger')) {
             document.querySelector("button.bp3-button.confirm-button.bp3-intent-danger").click()
-            clearInterval(checkExist);
+            clearInterval(ifDeleteButtonExists);
         }
     }, 100); // check every 100ms
 }
