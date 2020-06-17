@@ -3,7 +3,7 @@ var oldColor
 var backgroundColor
 var oldBulletColor
 var shifted
-
+var closedBulletcolor
 
 function addListenerToBlocks() {
     //highlight elements on mouse up
@@ -22,6 +22,7 @@ function highlight() {
     var textAreaContainer = document.querySelector("textarea[id^=block]").parentNode.parentNode.parentNode.parentNode
     //make the bullet of the textarea orange
     textAreaContainer.querySelector(".simple-bullet-outer").style.backgroundColor = "DarkOrange"
+
     //create reference
     var siblingIsParent
 
@@ -44,13 +45,13 @@ function highlight() {
             Array.prototype.map.call(textAreaContainer.previousElementSibling.children[1].childNodes, e => e.style.borderColor = 'DarkOrange')
 
             //make bullet for (sibling above textarea) orange for regular blocks
-            textAreaContainer.previousElementSibling.firstElementChild.querySelector(".simple-bullet-outer").style.backgroundColor = "DarkOrange"
+            textAreaContainer.previousElementSibling.firstElementChild.querySelector(".simple-bullet-outer.cursor-pointer").style.backgroundColor = "DarkOrange"
         }
         //if it's a header do this
         else {
             //make the borders of the children of the text area's sibling orange, if the text area is a header
             Array.prototype.map.call(textAreaContainer.parentNode.previousElementSibling.children[1].childNodes, e => e.style.borderColor = 'DarkOrange')
-            textAreaContainer.parentNode.previousElementSibling.firstElementChild.querySelector(".simple-bullet-outer").style.backgroundColor = "DarkOrange"
+            textAreaContainer.parentNode.previousElementSibling.firstElementChild.querySelector(".simple-bullet-outer.cursor-pointer").style.backgroundColor = "DarkOrange"
         }
     }
 }
@@ -58,7 +59,8 @@ function normalize() {
     //make all borders normal color
     Array.prototype.map.call(document.querySelectorAll(".block-border-left"), e => e.style.borderColor = oldColor)
     //make all outer bullets normal color
-    Array.prototype.map.call(document.querySelectorAll(".simple-bullet-outer"), e => e.style.backgroundColor = backgroundColor);
+    Array.prototype.map.call(document.querySelectorAll(".simple-bullet-outer:not(.roam-bullet-closed)"), e => e.style.backgroundColor = backgroundColor);
+    Array.prototype.map.call(document.querySelectorAll(".roam-bullet-closed"), e => e.style.backgroundColor = closedBulletcolor);
     //make all inner bullets normal
     if (document.querySelector("textarea").parentElement.parentElement.querySelector(".simple-bullet-inner")) {
         document.querySelector("textarea").parentElement.parentElement.querySelector(".simple-bullet-inner").style.backgroundColor = oldBulletColor
@@ -69,9 +71,11 @@ function normalize() {
 function initialize() {
     //get the initial colors of inner, outer bullets and borders
     if (document.querySelector('.block-border-left')){
-        oldColor = window.getComputedStyle(document.querySelector('.block-border-left')).borderColor}
+        oldColor = window.getComputedStyle(document.querySelector('.block-border-left')).borderColor
+    }
     backgroundColor = window.getComputedStyle(document.querySelector(".simple-bullet-outer")).backgroundColor
     oldBulletColor = window.getComputedStyle(document.querySelector(".simple-bullet-inner")).backgroundColor
+    closedBulletcolor = window.getComputedStyle(document.querySelector(".roam-bullet-closed")).backgroundColor
 
     //if I press any of these keys, normalize the colors of the elements. You can see the list of keys and their codes here: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
     document.onkeydown = function (e) {
