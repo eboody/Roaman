@@ -5,15 +5,14 @@ var oldBulletColor
 var shifted
 var closedBulletcolor
 
-
-function setKeyListener(){
-    document.addEventListener('keydown', function(event){
-        if (e.shiftKey){
+function setKeyListener() {
+    document.addEventListener('keydown', function (event) {
+        if (e.shiftKey) {
             disableScroll();
         }
     });
-    document.addEventListener('keyup', function(event){
-        if (e.shiftKey){
+    document.addEventListener('keyup', function (event) {
+        if (e.shiftKey) {
             enableScroll();
         }
     });
@@ -23,17 +22,21 @@ function setKeyListener(){
 
 function setMouseListener() {
     document.addEventListener("mouseover", function (e) {
+        var scrolledDown = false;
+        var scrolledUp = false;
         var block = e.path[2];
         var caret = block.firstChild.firstChild.firstChild.firstChild;
         if (caret) {
             block.addEventListener('wheel', function (event) {
-                console.log(event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate"))
-                if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate")){
+                //scrolled down
+                if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate") && !scrolledDown) {
                     caret.click();
+                    executed = true;
                 }
                 //if scrolled up
-                if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate")) {
+                if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate") && !scrolledUp) {
                     caret.click();
+                    executed = true;
                 }
             });
         }
