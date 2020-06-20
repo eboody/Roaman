@@ -4,44 +4,44 @@ var backgroundColor
 var oldBulletColor
 var shifted
 var closedBulletcolor
+var executed = false
+var scrolledDown = false;
+var scrolledUp = false;
 
 function setKeyListener() {
-    document.addEventListener('keydown', function (event) {
-        if (e.shiftKey) {
-            disableScroll();
-            console.log("shift down")
-        }
-    });
-    document.addEventListener('keyup', function (event) {
-        if (e.shiftKey) {
-            enableScroll();
-            console.log("shift up")
-        }
-    });
-}
 
+    document.onkeydown = function (e) {
+        // if (!executed) {
+        //     executed = true
+        //     disableScroll();
+        // }
+    }
+    document.onkeyup = function (e) {
+        enableScroll();
+        // executed = false;
+    }
+}
 
 
 function setMouseListener() {
     document.addEventListener("mouseover", function (e) {
-        // enableScroll();
-        var scrolledDown = false;
-        var scrolledUp = false;
+        enableScroll();
+
         var block = e.path[2];
         var caret = block.firstChild.firstChild.firstChild.firstChild;
         if (caret) {
             block.addEventListener('wheel', function (event) {
                 //scrolled down
-                if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate") && !scrolledDown) {
+                if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate")) {
                     caret.click();
                     scrolledDown = true;
-                    // disableScroll();
+                    disableScroll();
                 }
                 //if scrolled up
-                if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate") && !scrolledUp) {
+                if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate")) {
                     caret.click();
                     scrolledUp = true;
-                    // disableScroll();
+                    disableScroll();
                 }
             });
         }

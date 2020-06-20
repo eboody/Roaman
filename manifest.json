@@ -5,8 +5,7 @@
     "description": "Adds extra features to the note taking app called Roam Research",
     "background": {
         "scripts": [
-          "background.js", 
-          "ScrollControl.js"
+          "background.js"
         ],
         "persistent": false
       },
@@ -31,7 +30,7 @@
           "matches": [
             "https://roamresearch.com/*"
           ],
-          "js": ["ScopeCue.js"],
+          "js": ["ScopeCue.js", "ScrollControl.js"],
           "run_at": "document_end"
         }
       ],
