@@ -9,12 +9,17 @@ import {enableScroll, disableScroll} from './ScrollControl'
 
 function setKeyListener(){
     document.addEventListener('keydown', function(event){
-
+        if (e.shiftKey){
+            disableScroll();
+        }
     });
     document.addEventListener('keyup', function(event){
-
+        if (e.shiftKey){
+            enableScroll();
+        }
     });
 }
+
 
 
 function setMouseListener() {
@@ -25,18 +30,15 @@ function setMouseListener() {
             block.addEventListener('wheel', function (event) {
                 console.log(event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate"))
                 if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate")){
-                    disableScroll();
                     caret.click();
                 }
                 //if scrolled up
                 if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate")) {
-                    disableScroll();
                     caret.click();
                 }
             });
         }
     });
-    enableScroll();
 }
 
 
@@ -106,6 +108,7 @@ function setMouseListener() {
 
 function initialize() {
     setMouseListener();
+    setKeyListener();
 }
 //     //get the initial colors of inner, outer bullets and borders
 //     if (document.querySelector('.block-border-left')){
