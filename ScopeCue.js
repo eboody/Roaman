@@ -5,7 +5,6 @@ var oldBulletColor
 var shifted
 var closedBulletcolor
 
-import {enableScroll, disableScroll} from './ScrollControl'
 
 function setKeyListener(){
     document.addEventListener('keydown', function(event){
@@ -108,7 +107,6 @@ function setMouseListener() {
 
 function initialize() {
     setMouseListener();
-    setKeyListener();
 }
 //     //get the initial colors of inner, outer bullets and borders
 //     if (document.querySelector('.block-border-left')){

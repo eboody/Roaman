@@ -4,7 +4,10 @@
     "version": "0.0.0.1",
     "description": "Adds extra features to the note taking app called Roam Research",
     "background": {
-        "scripts": ["background.js"],
+        "scripts": [
+          "background.js", 
+          "ScrollControl.js"
+        ],
         "persistent": false
       },
     "permissions": ["declarativeContent"],
