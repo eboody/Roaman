@@ -17,6 +17,7 @@ function save_options() {
         console.log('autocompleteState is set to ' + autocompleteState);
       });
 
+
     var labelAutocomplete = document.getElementById("labelAutocomplete").value;
     chrome.storage.sync.set({
         autocompleteState: autocompleteState,
@@ -24,6 +25,9 @@ function save_options() {
     }, function () {
 
     });
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.reload(tabs[0].id);
+      });
 };
 
 function restore_options() {
