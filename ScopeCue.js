@@ -9,11 +9,13 @@ function setKeyListener() {
     document.addEventListener('keydown', function (event) {
         if (e.shiftKey) {
             disableScroll();
+            console.log("shift down")
         }
     });
     document.addEventListener('keyup', function (event) {
         if (e.shiftKey) {
             enableScroll();
+            console.log("shift up")
         }
     });
 }
@@ -22,7 +24,7 @@ function setKeyListener() {
 
 function setMouseListener() {
     document.addEventListener("mouseover", function (e) {
-        enableScroll();
+        // enableScroll();
         var scrolledDown = false;
         var scrolledUp = false;
         var block = e.path[2];
@@ -33,13 +35,13 @@ function setMouseListener() {
                 if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate") && !scrolledDown) {
                     caret.click();
                     scrolledDown = true;
-                    disableScroll();
+                    // disableScroll();
                 }
                 //if scrolled up
                 if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate") && !scrolledUp) {
                     caret.click();
                     scrolledUp = true;
-                    disableScroll();
+                    // disableScroll();
                 }
             });
         }
