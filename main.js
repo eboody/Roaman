@@ -1,10 +1,8 @@
-
-
 var scrolledDown = false;
 var scrolledUp = false;
 var interval
 var shifted = false
-
+var autocompleteState
 
 //allows me to make hotkeys and use keystates as conditions in other functions
 function setKeyListener() {
@@ -116,6 +114,10 @@ function setOnMouseoverListener() {
 
 
 function initialize() {
+    // get state of checkboxes so I know what function not to run
+    chrome.storage.local.get([`autocompleteState`], function(result){
+        autocompleteState = result.autocompleteState
+    })
     setOnMouseoverListener();
     setKeyListener();
     getDefaultValues();

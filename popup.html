@@ -30,7 +30,7 @@
       color: white;
       display: inline;
       font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-      font-weight:lighter;
+      font-weight: lighter;
     }
 
     .feature-entry {
@@ -71,6 +71,35 @@
       font-size: 1.5em;
       font-style: italic;
     }
+
+    input[type="checkbox"] {
+      transform: scale(2.5);
+      position: absolute;
+      margin-left: -20px;
+      margin-top: -45px;
+    }
+    #labelAutocomplete{
+      font-size: 2em;
+      color: royalblue;
+      font-weight: bolder;
+      position: absolute;
+      margin-top: -50px;
+      margin-left: 10px;
+    }
+    #save{
+      width: 75px;
+      height: 75px;
+      position: fixed;
+      border-radius: 38px;
+      right: 2%;
+      bottom: 3%;
+      border: none;
+      border-color: white;
+      box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.3);
+      background-color: darkorange;
+      color: white;
+      font-size: 1.5em;
+    }
   </style>
 </head>
 
@@ -80,12 +109,16 @@
     <div id="title">
       Roaman
     </div>
+    <button id="save">Save</button>
   </div>
   <div class="feature-entry" style="background-color:mediumseagreen;">
     <div>
       <div class="feature-title">Auto-complete</div>
-      <div class="feature-description"> Press <span class="shortcut">Ctrl + Space</span> to quickly select the first
-        entry in the auto-complete menu.</div>
+      <input type="checkbox" id="toggleAutocomplete" checked="true">
+      <label id="labelAutocomplete" for="toggleAutocomplete"></label>
+      <div class="feature-description"> Press either <span class="shortcut">Tab, Ctrl + Space, or Cmd+Enter</span> to
+        quickly select the first
+        entry in the auto-complete menu. This works in the search bar too.</div>
       <div class="feature-description">This also works in the search bar!</div>
       <img class="preview" src="./Images/Autocomplete.gif">
     </div>
@@ -116,5 +149,6 @@
     </div>
   </div>
 </body>
+<script src="popup.js"></script>
 
 </html>

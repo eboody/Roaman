@@ -1,7 +1,7 @@
 {
   "name": "Roaman",
   "options_page": "options.html",
-  "version": "0.0.0.1",
+  "version": "0.0.0.5",
   "description": "Adds extra features to the note taking app called Roam Research",
   "background": {
     "scripts": [
@@ -10,7 +10,8 @@
     "persistent": false
   },
   "permissions": [
-    "declarativeContent"
+    "declarativeContent",
+    "storage"
   ],
   "page_action": {
     "default_popup": "popup.html",
