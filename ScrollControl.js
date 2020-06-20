@@ -33,13 +33,15 @@ function disableScroll() {
     window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
     window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
     window.addEventListener('keydown', preventDefaultForScrollKeys, false);
-  }
-  
-  // call this to Enable
- function enableScroll() {
+    // console.log("scroll disabled")
+}
+
+// call this to Enable
+function enableScroll() {
     window.removeEventListener('DOMMouseScroll', preventDefault, false);
     window.removeEventListener(wheelEvent, preventDefault, wheelOpt); 
     window.removeEventListener('touchmove', preventDefault, wheelOpt);
     window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+    // console.log("scroll enabled")
   }
 // ———————— end of the scrolling section

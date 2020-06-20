@@ -5,43 +5,44 @@ var oldBulletColor
 var shifted
 var closedBulletcolor
 var executed = false
-var scrolledDown = false;
-var scrolledUp = false;
+var scrolled = false;
+var interval
 
 function setKeyListener() {
 
     document.onkeydown = function (e) {
-        // if (!executed) {
-        //     executed = true
-        //     disableScroll();
-        // }
+        if (!executed) {
+            executed = true
+            disableScroll();
+            interval = setInterval(function(e){
+                scrolled = false;
+            }, 500);
+        }
     }
     document.onkeyup = function (e) {
+        clearInterval(interval)
         enableScroll();
-        // executed = false;
+        executed = false;
     }
 }
 
 
 function setMouseListener() {
     document.addEventListener("mouseover", function (e) {
-        enableScroll();
-
         var block = e.path[2];
         var caret = block.firstChild.firstChild.firstChild.firstChild;
         if (caret) {
             block.addEventListener('wheel', function (event) {
                 //scrolled down
-                if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate")) {
+                if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate") && !scrolled) {
                     caret.click();
-                    scrolledDown = true;
-                    disableScroll();
+                    scrolled = true;
+                    console.log("scrolled")
                 }
                 //if scrolled up
-                if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate")) {
+                if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate") && !scrolled) {
                     caret.click();
-                    scrolledUp = true;
-                    disableScroll();
+                    scrolled = true;
                 }
             });
         }
