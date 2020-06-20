@@ -22,6 +22,7 @@ function setKeyListener() {
 
 function setMouseListener() {
     document.addEventListener("mouseover", function (e) {
+        enableScroll();
         var scrolledDown = false;
         var scrolledUp = false;
         var block = e.path[2];
@@ -31,12 +32,14 @@ function setMouseListener() {
                 //scrolled down
                 if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate") && !scrolledDown) {
                     caret.click();
-                    executed = true;
+                    scrolledDown = true;
+                    disableScroll();
                 }
                 //if scrolled up
                 if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate") && !scrolledUp) {
                     caret.click();
-                    executed = true;
+                    scrolledUp = true;
+                    disableScroll();
                 }
             });
         }
