@@ -1,38 +1,46 @@
 {
-    "name": "Roaman",
-    "options_page": "options.html",
-    "version": "0.0.0.1",
-    "description": "Adds extra features to the note taking app called Roam Research",
-    "background": {
-        "scripts": [
-          "background.js"
-        ],
-        "persistent": false
-      },
-    "permissions": ["declarativeContent"],
-    "page_action": {
-        "default_popup": "popup.html",
-        "default_icon": {
-            "16": "images/roaman.png",
-            "32": "images/roaman.png",
-            "48": "images/roaman.png",
-            "128": "images/roaman.png"
-          }
-      },
-      "icons": {
-        "16": "images/roaman.png",
-        "32": "images/roaman.png",
-        "48": "images/roaman.png",
-        "128": "images/roaman.png"
-      },
-      "content_scripts": [
-        {
-          "matches": [
-            "https://roamresearch.com/*"
-          ],
-          "js": ["ScopeCue.js", "ScrollControl.js"],
-          "run_at": "document_end"
-        }
+  "name": "Roaman",
+  "options_page": "options.html",
+  "version": "0.0.0.1",
+  "description": "Adds extra features to the note taking app called Roam Research",
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "permissions": [
+    "declarativeContent"
+  ],
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/roaman.png",
+      "32": "images/roaman.png",
+      "48": "images/roaman.png",
+      "128": "images/roaman.png"
+    }
+  },
+  "icons": {
+    "16": "images/roaman.png",
+    "32": "images/roaman.png",
+    "48": "images/roaman.png",
+    "128": "images/roaman.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://roamresearch.com/*"
       ],
-    "manifest_version": 2
-  }
+      "js": [
+        "main.js",
+        "./lib/ScrollControl.js",
+        "./lib/ScopeHighlight.js",
+        "./lib/Autocomplete.js",
+        "./lib/CaretPosition.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "manifest_version": 2
+}
