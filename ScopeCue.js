@@ -5,48 +5,56 @@ var oldBulletColor
 var shifted
 var closedBulletcolor
 var executed = false
-var scrolled = false;
+var scrolledDown = false;
+var scrolledUp = false;
 var interval
+var shifted = false
 
 function setKeyListener() {
 
     document.onkeydown = function (e) {
-        if (!executed) {
-            executed = true
-            disableScroll();
-            interval = setInterval(function(e){
-                scrolled = false;
-            }, 500);
+        if (e.shiftKey){
+            if (!executed) {
+                shifted = true
+                executed = true
+                disableScroll();
+                // interval = setInterval(function(e){
+                //     scrolledDown = false;
+                //     scrolledUp = false;
+                // }, 100);
+            }
         }
     }
     document.onkeyup = function (e) {
-        clearInterval(interval)
-        enableScroll();
-        executed = false;
+        if (e.key = "Shift"){
+            shifted = false;
+            // clearInterval(interval)
+            enableScroll();
+            executed = false
+        }
     }
 }
 
 
 function setMouseListener() {
-    document.addEventListener("mouseover", function (e) {
+    document.onmouseover = function (e) {
         var block = e.path[2];
         var caret = block.firstChild.firstChild.firstChild.firstChild;
         if (caret) {
-            block.addEventListener('wheel', function (event) {
+            block.onwheel = function (event) {
                 //scrolled down
-                if (event.deltaY > 0 && e.shiftKey && caret.className.includes("rotate") && !scrolled) {
+                if (event.deltaY > 0 && shifted && caret.className.includes("rotate")) {
                     caret.click();
-                    scrolled = true;
-                    console.log("scrolled")
+                    scrolledDown = true;
                 }
                 //if scrolled up
-                if (event.deltaY < 0 && e.shiftKey && !caret.className.includes("rotate") && !scrolled) {
+                if (event.deltaY < 0 && shifted && !caret.className.includes("rotate")) {
                     caret.click();
-                    scrolled = true;
+                    scrolledUp = true;
                 }
-            });
+            };
         }
-    });
+    };
 }
 
 
