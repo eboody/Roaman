@@ -115,6 +115,7 @@ function setMouseListener() {
 
 function initialize() {
     setMouseListener();
+    setKeyListener();
 }
 //     //get the initial colors of inner, outer bullets and borders
 //     if (document.querySelector('.block-border-left')){
