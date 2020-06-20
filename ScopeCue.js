@@ -107,7 +107,7 @@ function initialize() {
     document.onmousedown = function () {
         addListenerToBlocks();
         normalize();
-        setTimeout(normalize, 50)
+        setTimeout(normalize, 500)
     };
 
     document.querySelector(".roam-body").onkeydown = function (e) {
