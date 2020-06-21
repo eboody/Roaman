@@ -28,7 +28,7 @@ function setKeyListener() {
                 interval = setInterval(function (e) {
                     scrolledDown = false;
                     scrolledUp = false;
-                }, 300);
+                }, 500);
             }
         }
         if (e.which == 8 || //backspace
@@ -74,7 +74,7 @@ function setKeyListener() {
             setTimeout(highlight, 50)
             setAutocompleteListeners();
         }
-        if (e.ctrlKey && e.which == 46){
+        if (e.ctrlKey && e.which == 46) {
             deletePage();
         }
     }
@@ -92,31 +92,41 @@ function setOnMouseoverListener() {
         if (caret) {
             //listen for a wheel even on the block
             block.onwheel = function (wheelEvent) {
-                if (!collapseExpandState){
-                    console.log(collapseExpandState)
+                //|| mouseoverEvent.fromElement.querySelector(".bp3-icon-minus")
+                
+                if (!collapseExpandState) {
                     return
                 }
-
-                if (platform.includes("Win")){
+                
+                if (platform.includes("Win")) {
                     up = wheelEvent.deltaY < 0
                     down = wheelEvent.deltaY > 0
                 }
-                else if (platform.includes("Mac")){
+                else if (platform.includes("Mac")) {
                     up = wheelEvent.deltaY > 0
                     down = wheelEvent.deltaY < 0
                 }
-
+                
                 //if scrolled down, while shift is held down, and the caret is either in the collapsed state, or it's style is, and I haven't scrolled down yet
-                if (down && shifted && (caret.className.includes("rotate") || caret.getAttribute("style").includes("rotate")) && !scrolledDown) {
-                    //click on the caret
-                    caret.click();
+                if (down && shifted && (caret.className.includes("rotate") || wheelEvent.path[2].querySelector(".bp3-icon-plus")) && !scrolledDown) {
                     //set scrolleddown to true so that I don't send a shit load of click events needlessly
                     scrolledDown = true;
+                    //click on the caret
+                    if (caret) {
+                        caret.click();
+                    }
+                    if (wheelEvent.path[2].querySelector(".bp3-icon-plus")) {
+                        wheelEvent.path[2].querySelector(".bp3-icon-plus").click();
+                    }
                 }
                 //if scrolled up, while shift is held down, and the caret is not in the collapsed state and I haven't scrolled up yet
-                if (up && shifted && !caret.className.includes("rotate") && !scrolledUp) {
+                if (up && shifted && (!caret.className.includes("rotate") || wheelEvent.path[3].querySelector(".bp3-icon-minus")) && !scrolledUp) {
+                    wheelEvent.path[3].querySelector(".bp3-icon-minus").click()
+                    
                     //click on the caret
-                    caret.click();
+                    if (caret) {
+                        caret.click();
+                    }
                     //set scrolledup to true so that I don't send a shit load of click events needlessly
                     scrolledUp = true;
                 }
@@ -135,16 +145,20 @@ function setOnMouseoverListener() {
 }
 
 
+function clickmultiple(array) {
 
+
+    [].map.call(array, e => e.dispatchEvent(evt));
+}
 
 function initialize() {
     // get state of checkboxes so I know what function not to run
     chrome.storage.local.get([
-        `autocompleteState`, 
-        `deletePageState`, 
-        `collapseExpandState`, 
+        `autocompleteState`,
+        `deletePageState`,
+        `collapseExpandState`,
         `scopeHighlightState`
-    ], function(result){
+    ], function (result) {
         autocompleteState = result.autocompleteState;
         deletePageState = result.deletePageState;
         collapseExpandState = result.collapseExpandState;
@@ -159,7 +173,7 @@ function initialize() {
 
 //deletes the page
 function deletePage() {
-    if (!deletePageState){
+    if (!deletePageState) {
         console.log("Delete page is disabled")
         return
     }
