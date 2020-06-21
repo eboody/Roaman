@@ -1,40 +1,53 @@
 var autocompleteState
+var deletePageState
+var collapseExpandState
+var scopeHighlightState
+
+
 function save_options() {
-    //get the state of the checkbox
+    //get the state of the checkboxex
     autocompleteState = document.getElementById("toggleAutocomplete").checked;
-
-    //this is just so tht I can say enabled or disabled in the popup. might delete this later
-    if (autocompleteState) {
-        document.getElementById("labelAutocomplete").textContent = "ENABLED"
-    }
-    else {
-        document.getElementById("labelAutocomplete").textContent = "DISABLED"
-    }
-
+    deletePageState = document.getElementById("toggleDeletePage").checked;
+    collapseExpandState = document.getElementById("toggleCollapseExpand").checked;
+    scopeHighlightState = document.getElementById("toggleScopeHighlight").checked;
 
     //store the value of the checkbox
-    chrome.storage.local.set({autocompleteState: autocompleteState}, function() {
-        console.log('autocompleteState is set to ' + autocompleteState);
+    chrome.storage.local.set({
+        autocompleteState: autocompleteState, 
+        deletePageState: deletePageState, 
+        collapseExpandState: collapseExpandState, 
+        scopeHighlightState: scopeHighlightState
+    }, function() {
+        //do stuff if you want
       });
 
-
-    var labelAutocomplete = document.getElementById("labelAutocomplete").value;
     chrome.storage.sync.set({
         autocompleteState: autocompleteState,
-        labelAutocomplete: labelAutocomplete
+        deletePageState: deletePageState,
+        collapseExpandState: collapseExpandState,
+        scopeHighlightState: scopeHighlightState
     }, function () {
 
     });
+
+    //reload the page after saving
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.reload(tabs[0].id);
       });
+      window.close();
 };
 
 function restore_options() {
-    chrome.storage.sync.get({
-        autocompleteState: true,
-    }, function (items) {
+    chrome.storage.sync.get([
+        `autocompleteState`,
+        `deletePageState`,
+        `collapseExpandState`,
+        `scopeHighlightState`
+    ], function (items) {
         document.getElementById('toggleAutocomplete').checked = items.autocompleteState;   
+        document.getElementById('toggleDeletePage').checked = items.deletePageState;  
+        document.getElementById('toggleCollapseExpand').checked = items.collapseExpandState;
+        document.getElementById('toggleScopeHighlight').checked = items.scopeHighlightState;
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

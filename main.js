@@ -2,7 +2,12 @@ var scrolledDown = false;
 var scrolledUp = false;
 var interval
 var shifted = false
+
+//settings
 var autocompleteState
+var deletePageState
+var collapseExpandState
+var scopeHighlightState
 
 //allows me to make hotkeys and use keystates as conditions in other functions
 function setKeyListener() {
@@ -67,6 +72,9 @@ function setKeyListener() {
             setTimeout(highlight, 50)
             setAutocompleteListeners();
         }
+        if (e.ctrlKey && e.which == 46){
+            deletePage();
+        }
     }
 }
 
@@ -82,6 +90,10 @@ function setOnMouseoverListener() {
         if (caret) {
             //listen for a wheel even on the block
             block.onwheel = function (wheelEvent) {
+                if (!collapseExpandState){
+                    console.log(collapseExpandState)
+                    return
+                }
                 //if scrolled down, while shift is held down, and the caret is either in the collapsed state, or it's style is, and I haven't scrolled down yet
                 if (wheelEvent.deltaY > 0 && shifted && (caret.className.includes("rotate") || caret.getAttribute("style").includes("rotate")) && !scrolledDown) {
                     //click on the caret
@@ -115,9 +127,20 @@ function setOnMouseoverListener() {
 
 function initialize() {
     // get state of checkboxes so I know what function not to run
-    chrome.storage.local.get([`autocompleteState`], function(result){
-        autocompleteState = result.autocompleteState
+    chrome.storage.local.get([
+        `autocompleteState`, 
+        `deletePageState`, 
+        `collapseExpandState`, 
+        `scopeHighlightState`
+    ], function(result){
+        autocompleteState = result.autocompleteState;
+        deletePageState = result.deletePageState;
+        collapseExpandState = result.collapseExpandState;
+        scopeHighlightState = result.scopeHighlightState
+        console.log(scopeHighlightState)
     })
+
+
     setOnMouseoverListener();
     setKeyListener();
     getDefaultValues();
@@ -125,6 +148,10 @@ function initialize() {
 
 //deletes the page
 function deletePage() {
+    if (!deletePageState){
+        console.log("Delete page is disabled")
+        return
+    }
     document.querySelector("[class='bp3-button bp3-minimal bp3-small bp3-icon-more']").click()
     //document.querySelector("[class='bp3-popover-content']").querySelector("[class='bp3-menu']").children[6].firstChild.click()
 

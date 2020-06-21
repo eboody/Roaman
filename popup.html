@@ -4,6 +4,7 @@
 <head>
   <style>
     body {
+      font-weight: 300;
       width: auto;
       background-color: lightgray;
       padding: 15px;
@@ -30,12 +31,12 @@
       color: white;
       display: inline;
       font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-      font-weight: lighter;
+      font-weight: 300;
     }
 
     .feature-entry {
       width: auto;
-      margin-bottom: 15px;
+      margin-bottom: 25px;
       line-height: 1.5em;
       background-color: white;
       padding: 15px;
@@ -78,7 +79,8 @@
       margin-left: -20px;
       margin-top: -45px;
     }
-    #labelAutocomplete{
+
+    #labelAutocomplete {
       font-size: 2em;
       color: royalblue;
       font-weight: bolder;
@@ -86,7 +88,8 @@
       margin-top: -50px;
       margin-left: 10px;
     }
-    #save{
+
+    #save {
       width: 75px;
       height: 75px;
       position: fixed;
@@ -113,9 +116,9 @@
   </div>
   <div class="feature-entry" style="background-color:mediumseagreen;">
     <div>
+      <!-- Autocomplete -->
       <div class="feature-title">Auto-complete</div>
       <input type="checkbox" id="toggleAutocomplete" checked="true">
-      <label id="labelAutocomplete" for="toggleAutocomplete"></label>
       <div class="feature-description"> Press either <span class="shortcut">Tab, Ctrl + Space, or Cmd+Enter</span> to
         quickly select the first
         entry in the auto-complete menu. This works in the search bar too.</div>
@@ -125,14 +128,18 @@
   </div>
   <div>
     <div class="feature-entry" style="background-color:lightcoral;">
+      <!-- Delete Page -->
       <div class="feature-title">Delete Page</div>
+      <input type="checkbox" id="toggleDeletePage" checked="true">
       <div class="feature-description">Press <span class="shortcut">Ctrl + Delete</span> to quickly delete a page</div>
       <span class="warning">You can always undo by pressing Ctrl+Z but just be careful</span>
     </div>
   </div>
   <div>
     <div class="feature-entry" style="background-color: lightskyblue;">
+      <!-- Collapse and Expand -->
       <div class="feature-title">Easily collapse and expand blocks</div>
+      <input type="checkbox" id="toggleCollapseExpand" checked="true">
       <div class="feature-description">Press <span class="shortcut">Shift + Scroll Wheel</span> to quickly collapse or
         expand a block. <br><span class="shortcut">Shift + Scroll up</span> to collapse and <span class="shortcut">Shift
           +
@@ -142,7 +149,9 @@
   </div>
   <div>
     <div class="feature-entry" style="background-color:mediumpurple;">
+      <!-- Scope Highlight -->
       <div class="feature-title">Scope Highlighting</div>
+      <input type="checkbox" id="toggleScopeHighlight" checked="true">
       <div class="feature-description">Highlight the bullet next to the text area and the sibling directly above it
       </div>
       <img class="preview" src="./Images/Scope Highlight.gif">
