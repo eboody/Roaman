@@ -64,17 +64,15 @@ function setKeyListener() {
             (e.altKey && e.shiftKey && e.which == 40) || //alt+shift+down
             (e.which == 46) || //delete
             (e.which == 27)) { //escape
+            setAutocompleteListeners();
             highlight();
             setTimeout(highlight, 50)
-            setAutocompleteListeners();
         }
         if (e.ctrlKey && e.which == 46) {
             deletePage();
         }
     }
 }
-
-
 
 
 
@@ -165,6 +163,8 @@ function initialize() {
         autoCapState = result.autoCapState;
         sidebarHoverState = result.sidebarHoverState;
     })
+
+    setAutocompleteListeners();
     setOnMouseoverListener();
     setKeyListener();
     getDefaultValues();
