@@ -10,6 +10,7 @@ var autocompleteState
 var deletePageState
 var collapseExpandState
 var scopeHighlightState
+var autoCapState
 
 //allows me to make hotkeys and use keystates as conditions in other functions
 function setKeyListener() {
@@ -159,12 +160,14 @@ function initialize() {
         `autocompleteState`,
         `deletePageState`,
         `collapseExpandState`,
-        `scopeHighlightState`
+        `scopeHighlightState`,
+        `autoCapState`
     ], function (result) {
         autocompleteState = result.autocompleteState;
         deletePageState = result.deletePageState;
         collapseExpandState = result.collapseExpandState;
-        scopeHighlightState = result.scopeHighlightState
+        scopeHighlightState = result.scopeHighlightState;
+        autoCapState = result.autoCapState;
     })
 
 

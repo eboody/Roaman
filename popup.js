@@ -2,6 +2,7 @@ var autocompleteState
 var deletePageState
 var collapseExpandState
 var scopeHighlightState
+var autoCapState
 
 
 function save_options() {
@@ -10,13 +11,15 @@ function save_options() {
     deletePageState = document.getElementById("toggleDeletePage").checked;
     collapseExpandState = document.getElementById("toggleCollapseExpand").checked;
     scopeHighlightState = document.getElementById("toggleScopeHighlight").checked;
+    autoCapState = document.getElementById("toggleAutoCap").checked;
 
     //store the value of the checkbox
     chrome.storage.local.set({
         autocompleteState: autocompleteState, 
         deletePageState: deletePageState, 
         collapseExpandState: collapseExpandState, 
-        scopeHighlightState: scopeHighlightState
+        scopeHighlightState: scopeHighlightState,
+        autoCapState: autoCapState
     }, function() {
         //do stuff if you want
       });
@@ -25,7 +28,8 @@ function save_options() {
         autocompleteState: autocompleteState,
         deletePageState: deletePageState,
         collapseExpandState: collapseExpandState,
-        scopeHighlightState: scopeHighlightState
+        scopeHighlightState: scopeHighlightState,
+        autoCapState: autoCapState
     }, function () {
 
     });
@@ -42,12 +46,14 @@ function restore_options() {
         `autocompleteState`,
         `deletePageState`,
         `collapseExpandState`,
-        `scopeHighlightState`
+        `scopeHighlightState`,
+        `autoCapState`
     ], function (items) {
         document.getElementById('toggleAutocomplete').checked = items.autocompleteState;   
         document.getElementById('toggleDeletePage').checked = items.deletePageState;  
         document.getElementById('toggleCollapseExpand').checked = items.collapseExpandState;
         document.getElementById('toggleScopeHighlight').checked = items.scopeHighlightState;
+        document.getElementById('toggleAutoCap').checked = items.autoCapState;      
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
