@@ -121,12 +121,12 @@ function setOnMouseoverListener() {
                 }
                 //if scrolled up, while shift is held down, and the caret is not in the collapsed state and I haven't scrolled up yet
                 if (up && shifted && (!caret.className.includes("rotate") || wheelEvent.path[3].querySelector(".bp3-icon-minus")) && !scrolledUp) {
-                    wheelEvent.path[3].querySelector(".bp3-icon-minus").click()
-                    
-                    //click on the caret
                     if (caret) {
                         caret.click();
                     }
+                    wheelEvent.path[3].querySelector(".bp3-icon-minus").click()
+                    
+                    //click on the caret
                     //set scrolledup to true so that I don't send a shit load of click events needlessly
                     scrolledUp = true;
                 }
