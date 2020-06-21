@@ -3,6 +3,8 @@ var scrolledUp = false;
 var interval
 var shifted = false
 
+var platform = navigator.platform
+
 //settings
 var autocompleteState
 var deletePageState
@@ -94,15 +96,25 @@ function setOnMouseoverListener() {
                     console.log(collapseExpandState)
                     return
                 }
+
+                if (platform.includes("Win")){
+                    up = wheelEvent.deltaY < 0
+                    down = wheelEvent.deltaY > 0
+                }
+                else if (platform.includes("Mac")){
+                    up = wheelEvent.deltaY > 0
+                    down = wheelEvent.deltaY < 0
+                }
+
                 //if scrolled down, while shift is held down, and the caret is either in the collapsed state, or it's style is, and I haven't scrolled down yet
-                if (wheelEvent.deltaY > 0 && shifted && (caret.className.includes("rotate") || caret.getAttribute("style").includes("rotate")) && !scrolledDown) {
+                if (down && shifted && (caret.className.includes("rotate") || caret.getAttribute("style").includes("rotate")) && !scrolledDown) {
                     //click on the caret
                     caret.click();
                     //set scrolleddown to true so that I don't send a shit load of click events needlessly
                     scrolledDown = true;
                 }
                 //if scrolled up, while shift is held down, and the caret is not in the collapsed state and I haven't scrolled up yet
-                if (wheelEvent.deltaY < 0 && shifted && !caret.className.includes("rotate") && !scrolledUp) {
+                if (up && shifted && !caret.className.includes("rotate") && !scrolledUp) {
                     //click on the caret
                     caret.click();
                     //set scrolledup to true so that I don't send a shit load of click events needlessly
@@ -137,7 +149,6 @@ function initialize() {
         deletePageState = result.deletePageState;
         collapseExpandState = result.collapseExpandState;
         scopeHighlightState = result.scopeHighlightState
-        console.log(scopeHighlightState)
     })
 
 
