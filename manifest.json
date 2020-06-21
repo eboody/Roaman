@@ -1,7 +1,7 @@
 {
   "name": "Roaman",
   "options_page": "options.html",
-  "version": "0.0.0.5",
+  "version": "0.0.0.6",
   "description": "Adds extra features to the note taking app called Roam Research",
   "background": {
     "scripts": [
@@ -38,7 +38,8 @@
         "./lib/ScrollControl.js",
         "./lib/ScopeHighlight.js",
         "./lib/Autocomplete.js",
-        "./lib/CaretPosition.js"
+        "./lib/CaretPosition.js",
+        "./lib/SidebarHover.js"
       ],
       "run_at": "document_end"
     }

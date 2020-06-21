@@ -3,6 +3,7 @@ var deletePageState
 var collapseExpandState
 var scopeHighlightState
 var autoCapState
+var sidebarHoverState
 
 
 function save_options() {
@@ -12,6 +13,7 @@ function save_options() {
     collapseExpandState = document.getElementById("toggleCollapseExpand").checked;
     scopeHighlightState = document.getElementById("toggleScopeHighlight").checked;
     autoCapState = document.getElementById("toggleAutoCap").checked;
+    sidebarHoverState = document.getElementById("toggleSidebarHover").checked;
 
     //store the value of the checkbox
     chrome.storage.local.set({
@@ -19,7 +21,8 @@ function save_options() {
         deletePageState: deletePageState, 
         collapseExpandState: collapseExpandState, 
         scopeHighlightState: scopeHighlightState,
-        autoCapState: autoCapState
+        autoCapState: autoCapState,
+        sidebarHoverState: sidebarHoverState
     }, function() {
         //do stuff if you want
       });
@@ -29,7 +32,8 @@ function save_options() {
         deletePageState: deletePageState,
         collapseExpandState: collapseExpandState,
         scopeHighlightState: scopeHighlightState,
-        autoCapState: autoCapState
+        autoCapState: autoCapState,
+        sidebarHoverState: sidebarHoverState
     }, function () {
 
     });
@@ -47,13 +51,15 @@ function restore_options() {
         `deletePageState`,
         `collapseExpandState`,
         `scopeHighlightState`,
-        `autoCapState`
+        `autoCapState`,
+        `sidebarHoverState`
     ], function (items) {
         document.getElementById('toggleAutocomplete').checked = items.autocompleteState;   
         document.getElementById('toggleDeletePage').checked = items.deletePageState;  
         document.getElementById('toggleCollapseExpand').checked = items.collapseExpandState;
         document.getElementById('toggleScopeHighlight').checked = items.scopeHighlightState;
-        document.getElementById('toggleAutoCap').checked = items.autoCapState;      
+        document.getElementById('toggleAutoCap').checked = items.autoCapState;    
+        document.getElementById('toggleSidebarHover').checked = items.sidebarHoverState;    
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

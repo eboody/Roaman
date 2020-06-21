@@ -5,13 +5,6 @@ var shifted = false
 
 var platform = navigator.platform
 
-//settings
-var autocompleteState
-var deletePageState
-var collapseExpandState
-var scopeHighlightState
-var autoCapState
-
 //allows me to make hotkeys and use keystates as conditions in other functions
 function setKeyListener() {
     //listens when a key is pressed down
@@ -82,21 +75,7 @@ function setKeyListener() {
 }
 
 
-function setMouseMoveListener(){
-    var mousedOverMenu = false;
-    var evt = document.createEvent('MouseEvents')
-    evt.initMouseEvent('mouseover', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    document.onmousemove = function (mousemoveEvent){
-        if (mousemoveEvent.clientX < 65 && !mousedOverMenu){
-            document.querySelector(".bp3-button.bp3-minimal.bp3-icon-menu.pointer.bp3-small").dispatchEvent(evt);
-            console.log("now")
-            mousedOverMenu = true;
-        }
-        else {
-            mousedOverMenu = false;
-        }
-    }
-}
+
 
 
 
@@ -105,6 +84,7 @@ function setMouseMoveListener(){
 function setOnMouseoverListener() {
     //sets mouseover listener on the .roam-app level (which is most of the document)
     document.onmouseover = function (mouseoverEvent) {
+        
         //get the block element
         var block = mouseoverEvent.path[4];
         //get the element containing the caret
@@ -170,7 +150,8 @@ function setOnMouseoverListener() {
 
 function initialize() {
     // get state of checkboxes so I know what function not to run
-    chrome.storage.local.get([
+    chrome.storage.sync.get([
+        `sidebarHoverState`,
         `autocompleteState`,
         `deletePageState`,
         `collapseExpandState`,
@@ -182,9 +163,8 @@ function initialize() {
         collapseExpandState = result.collapseExpandState;
         scopeHighlightState = result.scopeHighlightState;
         autoCapState = result.autoCapState;
+        sidebarHoverState = result.sidebarHoverState;
     })
-
-
     setOnMouseoverListener();
     setKeyListener();
     getDefaultValues();
