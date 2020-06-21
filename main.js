@@ -163,8 +163,6 @@ function initialize() {
         autoCapState = result.autoCapState;
         sidebarHoverState = result.sidebarHoverState;
     })
-
-    setAutocompleteListeners();
     setOnMouseoverListener();
     setKeyListener();
     getDefaultValues();
