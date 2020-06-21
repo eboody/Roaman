@@ -81,6 +81,26 @@ function setKeyListener() {
     }
 }
 
+
+function setMouseMoveListener(){
+    var mousedOverMenu = false;
+    var evt = document.createEvent('MouseEvents')
+    evt.initMouseEvent('mouseover', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    document.onmousemove = function (mousemoveEvent){
+        if (mousemoveEvent.clientX < 50 && !mousedOverMenu){
+            document.querySelector(".bp3-button.bp3-minimal.bp3-icon-menu.pointer.bp3-small").dispatchEvent(evt);
+            console.log("now")
+            mousedOverMenu = true;
+        }
+        else {
+            mousedOverMenu = false;
+        }
+    }
+}
+
+
+
+
 //expand or collapse a block when holding shift and scrolling over it
 function setOnMouseoverListener() {
     //sets mouseover listener on the .roam-app level (which is most of the document)
@@ -148,12 +168,6 @@ function setOnMouseoverListener() {
 }
 
 
-function clickmultiple(array) {
-
-
-    [].map.call(array, e => e.dispatchEvent(evt));
-}
-
 function initialize() {
     // get state of checkboxes so I know what function not to run
     chrome.storage.local.get([
@@ -174,6 +188,7 @@ function initialize() {
     setOnMouseoverListener();
     setKeyListener();
     getDefaultValues();
+    setMouseMoveListener();
 }
 
 //deletes the page
