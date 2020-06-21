@@ -134,11 +134,13 @@ function setOnMouseoverListener() {
         }
         document.onmousedown = function (mousedownEvent) {
             normalize();
+            setTimeout(normalize, 50);
             return
         }
         block.onmouseup = function (mouseupEvent) {
             setAutocompleteListeners();
             highlight();
+            setTimeout(highlight, 50);
             return
         }
     };
