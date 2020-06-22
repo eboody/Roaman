@@ -2,7 +2,7 @@ var scrolledDown = false;
 var scrolledUp = false;
 var interval
 var shifted = false
-
+var easyTagState
 var platform = navigator.platform
 
 //allows me to make hotkeys and use keystates as conditions in other functions
@@ -154,7 +154,8 @@ function initialize() {
         `deletePageState`,
         `collapseExpandState`,
         `scopeHighlightState`,
-        `autoCapState`
+        `autoCapState`,
+        `easyTagState`
     ], function (result) {
         autocompleteState = result.autocompleteState;
         deletePageState = result.deletePageState;
@@ -162,6 +163,7 @@ function initialize() {
         scopeHighlightState = result.scopeHighlightState;
         autoCapState = result.autoCapState;
         sidebarHoverState = result.sidebarHoverState;
+        easyTagState = result.easyTagState;
     })
     setOnMouseoverListener();
     setKeyListener();

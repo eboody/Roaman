@@ -4,6 +4,7 @@ var collapseExpandState
 var scopeHighlightState
 // var autoCapState
 var sidebarHoverState
+var easyTagState
 
 
 function save_options() {
@@ -14,6 +15,7 @@ function save_options() {
     scopeHighlightState = document.getElementById("toggleScopeHighlight").checked;
     // autoCapState = document.getElementById("toggleAutoCap").checked;
     sidebarHoverState = document.getElementById("toggleSidebarHover").checked;
+    easyTagState = document.getElementById("toggleEasyTag").checked;
 
     //store the value of the checkbox
     chrome.storage.local.set({
@@ -22,7 +24,8 @@ function save_options() {
         collapseExpandState: collapseExpandState, 
         scopeHighlightState: scopeHighlightState,
         // autoCapState: autoCapState,
-        sidebarHoverState: sidebarHoverState
+        sidebarHoverState: sidebarHoverState,
+        easyTagState: easyTagState
     }, function() {
         //do stuff if you want
       });
@@ -33,7 +36,8 @@ function save_options() {
         collapseExpandState: collapseExpandState,
         scopeHighlightState: scopeHighlightState,
         // autoCapState: autoCapState,
-        sidebarHoverState: sidebarHoverState
+        sidebarHoverState: sidebarHoverState,
+        easyTagState: easyTagState
     }, function () {
 
     });
@@ -52,7 +56,8 @@ function restore_options() {
         `collapseExpandState`,
         `scopeHighlightState`,
         // `autoCapState`,
-        `sidebarHoverState`
+        `sidebarHoverState`,
+        'easyTagState'
     ], function (items) {
         document.getElementById('toggleAutocomplete').checked = items.autocompleteState;   
         document.getElementById('toggleDeletePage').checked = items.deletePageState;  
@@ -60,6 +65,7 @@ function restore_options() {
         document.getElementById('toggleScopeHighlight').checked = items.scopeHighlightState;
         // document.getElementById('toggleAutoCap').checked = items.autoCapState;    
         document.getElementById('toggleSidebarHover').checked = items.sidebarHoverState;    
+        document.getElementById('toggleEasyTag').checked = items.easyTagState;    
     });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
