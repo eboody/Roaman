@@ -82,21 +82,27 @@ function setKeyListener() {
 function setOnMouseoverListener() {
     //sets mouseover listener on the .roam-app level (which is most of the document)
     document.onmouseover = function (mouseoverEvent) {
-        
         //get the block element
-        var block = mouseoverEvent.path[4];
+        var block = mouseoverEvent.path[2];
         //get the element containing the caret
         var caret = block.querySelector(".rm-caret");
         //if the caret exists
-        if (caret) {
+
+        if (caret && block.className != "rm-reference-main" && block.className != "roam-center" &&
+            block.className != "roam-body-main flex-h-box" && block.id != "app" &&
+            block.className != "rm-reference-container" && block.className != "" &&
+            block.className != "roam-article" && block.className != "rm-mentions refs-by-page-view" &&
+            block.className != "rm-ref-page-view"
+        ) {
             //listen for a wheel even on the block
             block.onwheel = function (wheelEvent) {
+                // console.log(block)
                 //|| mouseoverEvent.fromElement.querySelector(".bp3-icon-minus")
-                
+
                 if (!collapseExpandState) {
                     return
                 }
-                
+
                 if (platform.includes("Win")) {
                     up = wheelEvent.deltaY < 0
                     down = wheelEvent.deltaY > 0
@@ -105,31 +111,95 @@ function setOnMouseoverListener() {
                     up = wheelEvent.deltaY > 0
                     down = wheelEvent.deltaY < 0
                 }
-                
+
                 //if scrolled down, while shift is held down, and the caret is either in the collapsed state, or it's style is, and I haven't scrolled down yet
-                if (down && shifted && (caret.className.includes("rotate") || wheelEvent.path[2].querySelector(".bp3-icon-plus")) && !scrolledDown) {
-                    //set scrolleddown to true so that I don't send a shit load of click events needlessly
+                if (down && shifted && (caret.className.includes("rotate") ||
+                    wheelEvent.path[2].querySelector(".bp3-icon-plus") || block.className == "flex-h-box" ||
+                    caret.getAttribute("style").includes("rotate")) &&
+                    !scrolledDown) {
                     scrolledDown = true;
-                    //click on the caret
-                    if (caret) {
+                    if (caret.className.includes("rotate")) {
                         caret.click();
+                        return
                     }
-                    if (wheelEvent.path[2].querySelector(".bp3-icon-plus")) {
+                    if (caret.getAttribute("style").includes("rotate")) {
+                        caret.click();
+                        return
+                    }
+                    //if the mouse is hovering over the divs around the header then adjust the path to click
+                    if (wheelEvent.path[2].id == "roam-right-sidebar-content" || wheelEvent.path[1].id == "roam-right-sidebar-content") {
+                        wheelEvent.path[0].querySelector(".bp3-icon-plus").click();
+                        return
+                    }
+                    //check if the element exists and click on the plus icon
+                    else if (wheelEvent.path[2].querySelector(".bp3-icon-plus")) {
                         wheelEvent.path[2].querySelector(".bp3-icon-plus").click();
+                        return
                     }
                 }
                 //if scrolled up, while shift is held down, and the caret is not in the collapsed state and I haven't scrolled up yet
-                if (up && shifted && (!caret.className.includes("rotate") || wheelEvent.path[3].querySelector(".bp3-icon-minus")) && !scrolledUp) {
-                    if (caret) {
+                if (up && shifted && (!caret.className.includes("rotate") ||
+                    wheelEvent.path[2].querySelector(".bp3-icon-minus") ||
+                    block.className == "flex-h-box") &&
+                    !scrolledUp) {
+                    scrolledUp = true;
+                    if (caret.getAttribute("style") != null && !caret.getAttribute("style").includes("rotate")) {
                         caret.click();
+                        return
                     }
-                    wheelEvent.path[3].querySelector(".bp3-icon-minus").click()
-                    
+                    else if (caret.getAttribute("style") == null) {
+                        caret.click();
+                        return
+                    }
+                    //if the mouse is hovering over the divs around the header then adjust the path to click
+                    if (wheelEvent.path[2].id == "roam-right-sidebar-content" || wheelEvent.path[1].id == "roam-right-sidebar-content") {
+                        wheelEvent.path[0].querySelector(".bp3-icon-minus").click();
+                        return
+                    }
+                    //click on the minus icon
+                    wheelEvent.path[2].querySelector(".bp3-icon-minus").click();
+
                     //click on the caret
                     //set scrolledup to true so that I don't send a shit load of click events needlessly
-                    scrolledUp = true;
                 }
             };
+        }
+        else {
+            block.onwheel = function (wheelEvent) {
+                if (!collapseExpandState) {
+                    return
+                }
+
+                if (platform.includes("Win")) {
+                    up = wheelEvent.deltaY < 0
+                    down = wheelEvent.deltaY > 0
+                }
+                else if (platform.includes("Mac")) {
+                    up = wheelEvent.deltaY > 0
+                    down = wheelEvent.deltaY < 0
+                }
+                if (down && shifted && wheelEvent.path[2].querySelector(".bp3-icon-plus") && !scrolledDown) {
+                    //if the mouse is hovering over the divs around the header then adjust the path to click
+                    if (wheelEvent.path[2].id == "roam-right-sidebar-content" || wheelEvent.path[1].id == "roam-right-sidebar-content") {
+                        wheelEvent.path[0].querySelector(".bp3-icon-plus").click();
+                        return
+                    }
+                    //check if the element exists and click on the plus icon
+                    else if (wheelEvent.path[2].querySelector(".bp3-icon-plus")) {
+                        wheelEvent.path[2].querySelector(".bp3-icon-plus").click();
+                        return
+                    }
+                }
+                if (up && shifted && wheelEvent.path[2].querySelector(".bp3-icon-minus") && !scrolledUp) {
+                    //if the mouse is hovering over the divs around the header then adjust the path to click
+                    if (wheelEvent.path[2].id == "roam-right-sidebar-content" || wheelEvent.path[1].id == "roam-right-sidebar-content") {
+                        wheelEvent.path[0].querySelector(".bp3-icon-minus").click();
+                        return
+                    }
+                    //click on the minus icon
+                    wheelEvent.path[2].querySelector(".bp3-icon-minus").click();
+                }
+            }
         }
         document.onmousedown = function (mousedownEvent) {
             normalize();
